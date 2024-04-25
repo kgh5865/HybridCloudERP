@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,16 +20,45 @@
    </svg>
       <span class="fs-4">Home</span>
    </a>
-  	 <%! String greeting="Welcome to Book Shopping Mall";
+  	 <%! String greeting="사용자 테이블 정보";
     	 String tagline="Welcome to Web Market!";
   	 %>
   	 <div class="p-5 mb-4 bg-body-tertiary rounded-3">
   		 <div class="container-fluid py-5">
   	 	 <h1 class="display-5 fw-bold"><%=greeting %></h1>
-  	 	 <p class="col-md-8 fs-4">BookMarket</p>
-   	     <p class="col-md-8 fs-4">2019225104 고민수</p>
-   		 <a href="./books.jsp" class="col-md-8 btn-link">도서목록</a>
-   		 <a href="./addBook.jsp" class="col-md-8 btn-link"> 도서등록</a>   
+
+   	     <%
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver"); // MySQL JDBC 드라이버 로드
+            
+            String url = "jdbc:mysql://210.119.103.174:3306/erp"; // MySQL 서버에 연결
+            String username = "starfish22";
+            String password = "1234";
+            conn = DriverManager.getConnection(url, username, password);
+
+            String query = "SELECT * FROM user";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+
+            out.println("<br>");
+            while (rs.next()) {
+            	%><h3>ID: <%= rs.getInt("id") %>  Name: <%= rs.getString("name") %></h3><%
+                out.println("<br>");
+            }
+        } catch (Exception e) {
+            out.println("Exception: " + e.getMessage());
+        } finally {
+            // 리소스 해제
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        }
+    %>
+   	     
    		 </div>
      </div>
    
