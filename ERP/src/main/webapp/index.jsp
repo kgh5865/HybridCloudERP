@@ -35,7 +35,7 @@
         try {
             Class.forName("com.mysql.jdbc.Driver"); // MySQL JDBC 드라이버 로드
             
-            String url = "jdbc:mysql://210.119.103.172:3306/erp"; // MySQL 서버에 연결
+            String url = "jdbc:mysql://210.119.103.172:8080/erp"; // MySQL 서버에 연결
             String username = "starfish22";
             String password = "1234";
             conn = DriverManager.getConnection(url, username, password);
