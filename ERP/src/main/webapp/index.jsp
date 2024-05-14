@@ -20,14 +20,16 @@
    </svg>
       <span class="fs-4">Home</span>
    </a>
-  	 <%! String greeting="사용자 테이블 정보";
+  	 <%! String greeting="매출내역";
     	 String tagline="Welcome to Web Market!";
   	 %>
   	 <div class="p-5 mb-4 bg-body-tertiary rounded-3">
   		 <div class="container-fluid py-5">
-  	 	 <h1 class="display-5 fw-bold"><%=greeting %></h1>
+  	 	 <h1 class="display-5 fw-bold"><%=greeting %>  <a href="testexel.jsp" class="btn btn-primary">엑셀 출력</a></h1>
+  	 	 
 
    	     <%
+   	     /*
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -56,7 +58,7 @@
             if (rs != null) rs.close();
             if (stmt != null) stmt.close();
             if (conn != null) conn.close();
-        }
+        }*/
     %>
    	     
    		 </div>
