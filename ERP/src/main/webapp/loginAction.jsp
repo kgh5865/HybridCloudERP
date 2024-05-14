@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인</title>
+    <title>로그인 결과</title>
     <!-- 부트스트랩 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -27,12 +28,12 @@
             text-align: center;
         }
 
-        .btn-login {
+        .btn-home {
             background-color: #007bff;
             border-color: #007bff;
         }
 
-        .btn-login:hover {
+        .btn-home:hover {
             background-color: #0056b3;
             border-color: #0056b3;
         }
@@ -42,22 +43,29 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
-            로그인
+            로그인 결과
         </div>
         <div class="card-body">
-            <form action="loginAction.jsp" method="post">
-                <div class="mb-3">
-                    <label for="username" class="form-label">아이디</label>
-                    <input type="text" class="form-control" id="username" name="username" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">비밀번호</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                </div>
+            <% 
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+                
+                // 여기서는 간단한 예시를 위해 하드코딩된 값으로 로그인을 검증합니다.
+                // 실제 프로덕션 환경에서는 데이터베이스와 연동하여 사용자 정보를 검증해야 합니다.
+                if (username.equals("admin") && password.equals("password")) {
+            %>
+                <h3 class="text-success">로그인 성공!</h3>
+                <p class="lead">환영합니다, <%= username %>님!</p>
                 <div class="text-center">
-                    <button type="submit" class="btn btn-login">로그인</button>
+                    <a href="./index.jsp" class="btn btn-home">홈으로 이동</a>
                 </div>
-            </form>
+            <% } else { %>
+                <h3 class="text-danger">로그인 실패!</h3>
+                <p class="lead">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+                <div class="text-center">
+                    <a href="./Login.jsp" class="btn btn-home">다시 시도</a>
+                </div>
+            <% } %>
         </div>
     </div>
 </div>
