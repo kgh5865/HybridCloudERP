@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
+<%@ page import="java.sql.*, java.io.*" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -40,32 +40,70 @@
     </style>
 </head>
 <body>
+<%@ include file="connection.jsp" %>
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
             로그인 결과
         </div>
         <div class="card-body">
-            <% 
+            <%
                 String username = request.getParameter("username");
-                String password = request.getParameter("password");
+                String passwd = request.getParameter("password");
+
+            
                 
-                // 여기서는 간단한 예시를 위해 하드코딩된 값으로 로그인을 검증합니다.
-                // 실제 프로덕션 환경에서는 데이터베이스와 연동하여 사용자 정보를 검증해야 합니다.
-                if (username.equals("admin") && password.equals("password")) {
+                PreparedStatement pstmt = null;
+                ResultSet rs = null;
+
+                try {
+                   
+
+                    // SQL 쿼리 실행
+                    String sql = "SELECT * FROM users WHERE id = ? AND pw = ?";
+                    pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, username);
+                    pstmt.setString(2, passwd);
+                    rs = pstmt.executeQuery();
+
+                    if (rs.next()) {
+                        // 로그인 성공
+                        session.setAttribute("username", username); // 세션에 사용자 이름 저장
             %>
-                <h3 class="text-success">로그인 성공!</h3>
-                <p class="lead">환영합니다, <%= username %>님!</p>
-                <div class="text-center">
-                    <a href="./index.jsp" class="btn btn-home">홈으로 이동</a>
-                </div>
-            <% } else { %>
-                <h3 class="text-danger">로그인 실패!</h3>
-                <p class="lead">아이디 또는 비밀번호가 올바르지 않습니다.</p>
-                <div class="text-center">
-                    <a href="./Login.jsp" class="btn btn-home">다시 시도</a>
-                </div>
-            <% } %>
+                        <h3 class="text-success">로그인 성공!</h3>
+                        <p class="lead">환영합니다, <%= username %>님!</p>
+                        <div class="text-center">
+                            <a href="./index.jsp" class="btn btn-home">홈으로 이동</a>
+                        </div>
+            <%
+                    } else {
+                        // 로그인 실패
+            %>
+                        <h3 class="text-danger">로그인 실패!</h3>
+                        <p class="lead">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+                        <div class="text-center">
+                            <a href="./Login.jsp" class="btn btn-home">다시 시도</a>
+                        </div>
+            <%
+                    }
+                } catch (Exception e) {
+                    StringWriter sw = new StringWriter();
+                    e.printStackTrace(new PrintWriter(sw));
+                    out.println("<p>An error occurred: " + e.getMessage() + "</p>");
+                    out.println("<pre>" + sw.toString() + "</pre>");
+                } finally {
+                    try {
+                        if (rs != null) rs.close();
+                        if (pstmt != null) pstmt.close();
+                        if (conn != null) conn.close();
+                    } catch (SQLException se) {
+                        StringWriter sw = new StringWriter();
+                        se.printStackTrace(new PrintWriter(sw));
+                        out.println("<p>An error occurred while closing resources: " + se.getMessage() + "</p>");
+                        out.println("<pre>" + sw.toString() + "</pre>");
+                    }
+                }
+            %>
         </div>
     </div>
 </div>

@@ -39,6 +39,7 @@
     </style>
 </head>
 <body>
+<%@ include file="connection.jsp" %>
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
