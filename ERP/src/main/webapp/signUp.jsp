@@ -53,8 +53,8 @@
                 <div class="mb-3">
                     <label for="gender" class="form-label">성별</label>
                     <select class="form-select" id="gender" name="gender" required>
-                        <option value="male">남성</option>
-                        <option value="female">여성</option>
+                        <option value="M">남성</option>
+                        <option value="W">여성</option>
                     </select>
                 </div>
                 <div class="mb-3">

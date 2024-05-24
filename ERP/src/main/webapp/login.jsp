@@ -15,13 +15,15 @@
             color: #212529;
         }
 
-        .container {
-            max-width: 400px;
+        .login-container {
+            max-width: 300px; /* 변경된 부분 */
+            margin: auto;
+            margin-top: 5rem;
         }
 
         .card-header {
             background-color: #343a40;
-            color: #fff;
+            color: #000;
             font-size: 1.5rem;
             font-weight: bold;
             text-align: center;
@@ -30,6 +32,7 @@
         .btn-login {
             background-color: #007bff;
             border-color: #007bff;
+            color: #000; /* 변경된 부분: 로그인 버튼의 텍스트 색을 검정으로 변경 */
         }
 
         .btn-login:hover {
@@ -39,7 +42,9 @@
     </style>
 </head>
 <body>
-<div class="container mt-5">
+<%@ include file="menu.jsp" %>
+<%@ include file="connection.jsp" %>
+<div class="login-container">
     <div class="card">
         <div class="card-header">
             로그인
