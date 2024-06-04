@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Menu Example</title>
+    <title>AAA Company</title>
     <style>
 
 </style>
@@ -90,6 +90,7 @@
 												<th>부가세</th>
 												<th>결제수단</th>
 												<th>입금계좌</th>
+												<th>견적서</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -98,7 +99,7 @@
     PreparedStatement pstmt = null;
     
     try {
-        String sql = "SELECT * FROM sales ORDER BY `index` ASC";
+        String sql = "SELECT * FROM sales ORDER BY `date` DESC";
         pstmt = conn.prepareStatement(sql);
         rs = pstmt.executeQuery();
         
@@ -113,17 +114,28 @@
             String payment = rs.getString("payment");
             String account = rs.getString("account");
 %>
-            <tr>
-                <td><%= customer %></td>
-                <td><%= date %></td>
-                <td><%= name %></td>
-                <td><%= count %></td>
-                <td><%= price %></td>
-                <td><%= supply %></td>
-                <td><%= vat %></td>
-                <td><%= payment %></td>
-                <td><%= account %></td>
-            </tr>
+			<tr>
+                                <form method="post" action="salesExell.jsp">
+                                    <td><%= customer %></td>
+                                    <td><%= date %></td>
+                                    <td><%= name %></td>
+                                    <td><%= count %></td>
+                                    <td><%= price %></td>
+                                    <td><%= supply %></td>
+                                    <td><%= vat %></td>
+                                    <td><%= payment %></td>
+                                    <td><%= account %></td>
+                                    <td>
+                                        <input type="hidden" name="date" value="<%= date %>">
+                                        <input type="hidden" name="name" value="<%= name %>">
+                                        <input type="hidden" name="count" value="<%= count %>">
+                                        <input type="hidden" name="price" value="<%= price %>">
+                                        <input type="hidden" name="supply" value="<%= supply %>">
+                                        <input type="hidden" name="vat" value="<%= vat %>">
+                                        <input type="submit" value="출력">
+                                    </td>
+                                </form>
+                            </tr>
 <%
         }
     } catch (SQLException ex) {

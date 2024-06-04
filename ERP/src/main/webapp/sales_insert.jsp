@@ -7,7 +7,7 @@
 <body>
 <%@ include file="connection.jsp" %>
 <%
-//폼에서 받은 데이터를 변수에 저장
+// 폼에서 받은 데이터를 변수에 저장
 String customer = request.getParameter("label_customer");
 String date = request.getParameter("label_date");
 String name = request.getParameter("label_name");
@@ -18,78 +18,106 @@ int vat = (int)(supply * 0.1); // 부가세 계산
 String payment = request.getParameter("label_payment");
 String account = request.getParameter("label_account");
 
-int item_code=0;
+int item_code = 0;
+int current_count = 0;
 
-    ResultSet rs = null;
-	PreparedStatement pstmt = null;
-	
-	//pinventory 확인
-	try {
-        String sql = "SELECT code FROM pinventory Where name=?";
-        pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, name);
-        rs = pstmt.executeQuery();
-        
-        
-        while (rs.next()) {
-        	item_code = rs.getInt("code");
-        }
-    } catch (SQLException ex) {
-    	%>
-    	<script type="text/javascript">
-		alert("상품명이 없습니다");
-		location.href = 'salesManagement.jsp'
-	</script>
-        <%
-    } finally {
-        if (rs != null)
-            rs.close();
-        if (pstmt != null)
-            pstmt.close();
-    }
-            
+ResultSet rs = null;
+PreparedStatement pstmt = null;
 
+// pinventory 확인
+try {
+    String sql = "SELECT code, count FROM pinventory WHERE name = ?";
+    pstmt = conn.prepareStatement(sql);
+    pstmt.setString(1, name);
+    rs = pstmt.executeQuery();
     
-
-    try {
-        String sql = "INSERT INTO sales (customer, date, code, name, count, price, supply, vat, payment, account) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, customer);
-        pstmt.setString(2, date);
-        pstmt.setInt(3, item_code);
-        pstmt.setString(4, name);
-        pstmt.setInt(5, count);
-        pstmt.setInt(6, price);
-        pstmt.setInt(7, supply);
-        pstmt.setInt(8, vat);
-        pstmt.setString(9, payment);
-        pstmt.setString(10, account);
-
-        int result = pstmt.executeUpdate();
-
-        if(result > 0){
-        	%>
-        	<script type="text/javascript">
-        	alert("거래 입력 완료");
-        	location.href = 'salesManagement.jsp'
-    	</script>
-            <%
-        	
-        }else{
-        	%>
-        	<script type="text/javascript">
-    		alert("거래 입력 실패");
-    		location.href = 'salesManagement.jsp'
-    	</script>
-            <%
-        }
-    } catch(Exception e) {
-        e.printStackTrace();
-    } finally {
-        try { if (pstmt != null) pstmt.close(); } catch(Exception e) {}
-        try { if (conn != null) conn.close(); } catch(Exception e) {}
+    if (rs.next()) {
+        item_code = rs.getInt("code");
+        current_count = rs.getInt("count");
+    } else {
+        %>
+        <script type="text/javascript">
+        alert("상품명이 없습니다");
+        location.href = 'salesManagement.jsp';
+        </script>
+        <%
+        return;
     }
+} catch (SQLException ex) {
+    ex.printStackTrace();
+} finally {
+    if (rs != null) rs.close();
+    if (pstmt != null) pstmt.close();
+}
+
+// 재고 수량 업데이트
+if (current_count >= count) {
+    try {
+        String updateSql = "UPDATE pinventory SET count = ? WHERE code = ?";
+        pstmt = conn.prepareStatement(updateSql);
+        pstmt.setInt(1, current_count - count);
+        pstmt.setInt(2, item_code);
+        pstmt.executeUpdate();
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        %>
+        <script type="text/javascript">
+        alert("재고 업데이트 실패");
+        location.href = 'salesManagement.jsp';
+        </script>
+        <%
+        return;
+    } finally {
+        if (pstmt != null) pstmt.close();
+    }
+} else {
+    %>
+    <script type="text/javascript">
+    alert("재고가 부족합니다");
+    location.href = 'salesManagement.jsp';
+    </script>
+    <%
+    return;
+}
+
+// 거래 입력
+try {
+    String sql = "INSERT INTO sales (customer, date, code, name, count, price, supply, vat, payment, account) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    pstmt = conn.prepareStatement(sql);
+    pstmt.setString(1, customer);
+    pstmt.setString(2, date);
+    pstmt.setInt(3, item_code);
+    pstmt.setString(4, name);
+    pstmt.setInt(5, count);
+    pstmt.setInt(6, price);
+    pstmt.setInt(7, supply);
+    pstmt.setInt(8, vat);
+    pstmt.setString(9, payment);
+    pstmt.setString(10, account);
+
+    int result = pstmt.executeUpdate();
+
+    if (result > 0) {
+        %>
+        <script type="text/javascript">
+        alert("거래 입력 완료");
+        location.href = 'salesManagement.jsp';
+        </script>
+        <%
+    } else {
+        %>
+        <script type="text/javascript">
+        alert("거래 입력 실패");
+        location.href = 'salesManagement.jsp';
+        </script>
+        <%
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+} finally {
+    if (pstmt != null) pstmt.close();
+    if (conn != null) conn.close();
+}
 %>
 </body>
 </html>

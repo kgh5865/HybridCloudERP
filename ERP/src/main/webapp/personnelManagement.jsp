@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Menu Example</title>
+    <title>AAA Company</title>
     <style>
     </style>
 </head>
@@ -13,7 +13,8 @@
     <%@ include file="menu.jsp" %>
     <%@ include file="connection.jsp" %>
 
-    <div class="container-fluid" style="margin: 0 auto; width: 80%;">
+&ensp;&ensp;&ensp;&ensp;
+    <div class="container" style="margin: 0 auto; width: 80%;">
         <div class="card shadow mb-1">
             <div class="card-header py-3">
                 <h4 class="m-0 font-weight-bold text-primary">인사 등록</h4>
@@ -27,14 +28,13 @@
                                     <tr>
                                         <th>코드</th>
                                         <th>부서이름</th>
-                                        <th>총 급여</th>
                                         <th>직책이름</th>
                                         <th>입사일</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><input type="text" name="code" size="20"></td>
+                                        <td><input type="text" name="code" size="15"></td>
                                         <td>
                                             <select name="department">
                                                 <option value="1">인사</option>
@@ -44,7 +44,6 @@
                                             </select>
                                         </td>
                                         
-                                        <td><input type="text" name="total" size="20"></td>
                                         <td>
                                             <select name="position">
                                                 <option value="1">사장</option>

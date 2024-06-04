@@ -50,17 +50,13 @@
             <%
                 String username = request.getParameter("username");
                 String passwd = request.getParameter("password");
-
-            
                 
                 PreparedStatement pstmt = null;
                 ResultSet rs = null;
 
                 try {
-                   
-
                     // SQL 쿼리 실행
-                    String sql = "SELECT * FROM users WHERE id = ? AND pw = ?";
+                    String sql = "SELECT p.d_num, p.p_num FROM users u, personnel p WHERE u.id = ? AND u.pw = ? AND u.code = p.code";
                     pstmt = conn.prepareStatement(sql);
                     pstmt.setString(1, username);
                     pstmt.setString(2, passwd);
@@ -68,19 +64,24 @@
 
                     if (rs.next()) {
                         // 로그인 성공
+                        int d_num = rs.getInt("d_num");
+                        int p_num = rs.getInt("p_num");
                         session.setAttribute("id", username); // 세션에 사용자 이름 저장
                         session.setAttribute("pass", passwd);
-                      	//세션 유지시간 설정
-                    	session.setMaxInactiveInterval(60); //1분간 아이디 유지
-                    	response.sendRedirect("index.jsp");
+                        session.setAttribute("d_num", d_num); // 세션에 d_num 저장
+                        session.setAttribute("p_num", p_num);
+                        System.out.println(d_num);
+                        // 세션 유지시간 설정
+                        session.setMaxInactiveInterval(600); // 10분간 아이디 유지
+                        response.sendRedirect("index.jsp");
                     } else {
                         // 로그인 실패
-                    	%>
+                        %>
                         <script>
                             alert("아이디 또는 비밀번호가 올바르지 않습니다.");
                             location.href = 'Login.jsp';
                         </script>
-                		<%
+                        <%
                     }
                 } catch (Exception e) {
                     StringWriter sw = new StringWriter();

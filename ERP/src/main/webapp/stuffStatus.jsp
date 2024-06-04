@@ -9,8 +9,6 @@
 <head>
     <meta charset="UTF-8">
     <title>재고 및 수입품 목록</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -113,7 +111,7 @@
 
                                 try {
                                     // SQL 쿼리 실행
-                                    String sql1 = "SELECT * FROM stuff ORDER BY code ASC";
+                                    String sql1 = "SELECT * FROM sinventory ORDER BY code ASC";
                                     pstmt1 = conn.prepareStatement(sql1);
                                     rs1 = pstmt1.executeQuery();        
 
@@ -148,8 +146,8 @@
                                     ResultSet rs2 = null;
                                     PreparedStatement pstmt2 = null;
                                     try {
-                                        String sql = "SELECT name FROM stuff ORDER BY code ASC";
-                                        pstmt2 = conn.prepareStatement(sql);
+                                       String sql2 = "SELECT name FROM sinventory ORDER BY code ASC";
+                                        pstmt2 = conn.prepareStatement(sql2);
                                         rs2 = pstmt2.executeQuery();
                                         while (rs2.next()) {
                                             String name2 = rs2.getString("name");
@@ -175,7 +173,7 @@
                                         ResultSet rs3 = null;
                                         PreparedStatement pstmt3 = null;
                                         try {
-                                            String sql3 = "SELECT count FROM stuff ORDER BY code ASC";
+                                           String sql3 = "SELECT count FROM sinventory ORDER BY code ASC";
                                             pstmt3 = conn.prepareStatement(sql3);
                                             rs3 = pstmt3.executeQuery();
                                             while (rs3.next()) {
@@ -225,11 +223,5 @@
         </div>
     </div>
 </div>
-
-<!-- Bootstrap core JavaScript-->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 </html>

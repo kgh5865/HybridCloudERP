@@ -14,20 +14,18 @@ PreparedStatement pstmt = null;
 
 String code = request.getParameter("code");
 int department = Integer.parseInt(request.getParameter("department"));
-int total = Integer.parseInt(request.getParameter("total"));
 int position = Integer.parseInt(request.getParameter("position"));
 String startdate = request.getParameter("startdate");
 
 //폼 데이터 처리
 
 try {
-	String insertSql = "INSERT INTO personnel (code, d_num, date, total, p_num, startdate) VALUES (?, ?, 0, ?, ?, ?)";
+	String insertSql = "INSERT INTO personnel (code, d_num, date, total, p_num, startdate) VALUES (?, ?, 0, 0, ?, ?)";
     pstmt = conn.prepareStatement(insertSql);
     pstmt.setInt(1, Integer.parseInt(code));
     pstmt.setInt(2, department);
-    pstmt.setInt(3, total);
-    pstmt.setInt(4, position);
-    pstmt.setDate(5, Date.valueOf(startdate));
+    pstmt.setInt(3, position);
+    pstmt.setDate(4, Date.valueOf(startdate));
 
     int result = pstmt.executeUpdate();
 

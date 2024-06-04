@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>영업 현황</title>
+    <title>AAA Company</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Chart.js -->
@@ -39,6 +39,12 @@
                         <h4 class="m-0 font-weight-bold text-primary">영업 목록</h4>
                     </div>
                     <div class="card-body">
+                    <!-- 스타일 태그를 사용하여 테이블의 글자 크기를 줄임 -->
+            <style>
+                #dataTable {
+                    font-size: 12px; /* 원하는 글자 크기로 설정 */
+                }
+            </style>
                         <table class="table table-bordered" id="dataTable">
                             <thead>
                                 <tr>
@@ -108,10 +114,10 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <!-- 영업 그래프 -->
+                <!-- 거래처별 영업 그래프 -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h4 class="m-0 font-weight-bold text-primary">영업 그래프</h4>
+                        <h4 class="m-0 font-weight-bold text-primary">거래처별 영업 그래프</h4>
                     </div>
                     <div class="card-body" style="display: flex; justify-content: center; align-items: center;">
                         <!-- 차트를 그릴 canvas 요소 -->
@@ -145,10 +151,6 @@
                                     }
                                 } catch (SQLException ex) {
                                     ex.printStackTrace();
-                                } finally {
-                                    if (rs2 != null) try { rs2.close(); } catch (SQLException e) { e.printStackTrace(); }
-                                    if (pstmt2 != null) try { pstmt2.close(); } catch (SQLException e) { e.printStackTrace(); }
-                                    if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
                                 }
                             %>
 
@@ -186,6 +188,83 @@
                         </script>
                     </div>
                 </div>
+                <!-- 날짜별 영업 그래프 -->
+                <div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h4 class="m-0 font-weight-bold text-primary">날짜별 영업 그래프</h4>
+    </div>
+    <div class="card-body" style="display: flex; justify-content: center; align-items: center;">
+        <!-- 차트를 그릴 canvas 요소 -->
+        <div id="chartContainer">
+            <canvas id="dateChart"></canvas>
+        </div>
+        <script>
+            // 데이터베이스에서 가져온 데이터를 JavaScript 변수로 전달
+            var dateLabels = [];
+            var supplyData = [];
+
+            <% 
+                pstmt2 = null;
+                rs2 = null;
+
+                try {
+                    // SQL 쿼리 실행
+                    String sql = "SELECT date, SUM(supply) as totalSupply FROM sales GROUP BY date ORDER BY date ASC";
+                    pstmt2 = conn.prepareStatement(sql);
+                    rs2 = pstmt2.executeQuery();
+
+                    // 결과를 JavaScript 배열에 추가
+                    while (rs2.next()) {
+                        String date = rs2.getString("date");
+                        int totalSupply = rs2.getInt("totalSupply");
+            %>
+                        dateLabels.push('<%= date %>');
+                        supplyData.push(<%= totalSupply %>);
+            <% 
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                } finally {
+                    if (rs2 != null) try { rs2.close(); } catch (SQLException e) { e.printStackTrace(); }
+                    if (pstmt2 != null) try { pstmt2.close(); } catch (SQLException e) { e.printStackTrace(); }
+                    if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+                }
+            %>
+
+            // 차트 데이터
+            var data = {
+                labels: dateLabels,
+                datasets: [{
+                    label: '날짜별 공급가액',
+                    data: supplyData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            // 차트 옵션
+            var options = {
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            };
+
+            // 막대 그래프 그리기
+            var ctx = document.getElementById('dateChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: options
+            });
+        </script>
+    </div>
+</div>
             </div>
         </div>
     </div>
