@@ -83,7 +83,7 @@
 </style>
 <script>
 function checkAccess(d_num, required_d_num, required_p_num) {
-    if (d_num !== required_d_num || required_p_num>2) {
+    if (d_num !== required_d_num) {
         alert("접근 권한이 없습니다.");
         return false; // 링크를 따라가지 않도록 false 반환
     }
@@ -96,7 +96,6 @@ function checkAccess(d_num, required_d_num, required_p_num) {
    // 로그인 세션
    String user_id = (String)session.getAttribute("id");
    Integer d_num = (Integer)session.getAttribute("d_num"); // Integer로 직접 캐스팅
-   Integer p_num = (Integer)session.getAttribute("p_num");
 %>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,8 +108,8 @@ function checkAccess(d_num, required_d_num, required_p_num) {
                         생산
                     </a>
                     <div class="dropdown-menu" aria-labelledby="productionDropdown">
-                        <a class="dropdown-item" href="./productManagement.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 4, <%=p_num%>);">생산 입력</a>
-                        <a class="dropdown-item" href="./productStatus.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 4, <%=p_num%>);">생산물품 관리</a>
+                        <a class="dropdown-item" href="./productManagement.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 4);">생산 입력</a>
+                        <a class="dropdown-item" href="./productStatus.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 4);">생산물품 관리</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -118,8 +117,8 @@ function checkAccess(d_num, required_d_num, required_p_num) {
                         물류
                     </a>
                     <div class="dropdown-menu" aria-labelledby="logisticsDropdown">
-                        <a class="dropdown-item" href="./stuffManagement.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 3, <%=p_num%>);">물류 입력</a>
-                        <a class="dropdown-item" href="./stuffStatus.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 3, <%=p_num%>);">물류 관리</a>
+                        <a class="dropdown-item" href="./stuffManagement.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 3);">물류 입력</a>
+                        <a class="dropdown-item" href="./stuffStatus.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 3);">물류 관리</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -127,8 +126,8 @@ function checkAccess(d_num, required_d_num, required_p_num) {
                         인사
                     </a>
                     <div class="dropdown-menu" aria-labelledby="personnelDropdown">
-                        <a class="dropdown-item" href="./personnelManagement.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 1, <%=p_num%>);">인사 등록</a>
-                        <a class="dropdown-item" href="attendance.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 1, <%=p_num%>);">근태 등록</a>
+                        <a class="dropdown-item" href="./personnelManagement.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 1);">인사 등록</a>
+                        <a class="dropdown-item" href="attendance.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 1);">근태 등록</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -136,8 +135,8 @@ function checkAccess(d_num, required_d_num, required_p_num) {
                         영업
                     </a>
                     <div class="dropdown-menu" aria-labelledby="salesDropdown">
-                        <a class="dropdown-item" href='./salesManagement.jsp' onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 2, <%=p_num%>);">거래 관리</a>
-                        <a class="dropdown-item" href="./salesStatus.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 2, <%=p_num%>);">영업 현황</a>
+                        <a class="dropdown-item" href='./salesManagement.jsp' onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 2);">거래 관리</a>
+                        <a class="dropdown-item" href="./salesStatus.jsp" onclick="return checkAccess(<%= d_num != null ? d_num : -1 %>, 2);">영업 현황</a>
                     </div>
                 </li>
             </ul>
