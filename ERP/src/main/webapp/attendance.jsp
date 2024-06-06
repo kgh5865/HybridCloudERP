@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>AAA Company</title>
+    <title>근태</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -79,7 +79,7 @@
                                         </select>
                                     </td>
                                     <td><input type="text" name="pay" size="20" id="pay" readonly></td>
-                                    <td><input type="submit" value="Register" name="등록"></td>
+                                    <td><input type="submit" value="Register" name="register"></td>
                                 </tr>
                             </tbody>
                         </table>
