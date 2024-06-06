@@ -12,7 +12,7 @@
     	Connection conn = null;
         // 데이터베이스 연결 정보
         String jdbcDriver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://0.tcp.jp.ngrok.io:17027/erp";
+        String url = "jdbc:mysql://0.tcp.jp.ngrok.io:16151/erp";
         String user = "AAA"; // 설정한 MySQL 사용자
         String password = "1234"; // 설정한 MySQL 비밀번호
         
